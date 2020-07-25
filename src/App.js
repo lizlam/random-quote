@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import useInterval from './hooks/useInterval';
 import './App.css';
 
 function App() {
   const url = '/.netlify/functions/quotes';
   const [quote, setQuote] = useState();
 
-  useEffect(() => {
-    const getQuote = async () => {
-      const response = await fetch(url);
-      const data = await response.json();
-      setQuote(data.quote);
-      return data;
-    }
-    getQuote();
-  }, []);
+  const getQuote = async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    setQuote(data.quote);
+    return data;
+  }
+
+  useInterval(() => {
+    getQuote(); 
+  }, 1000);
 
   return (
     <div className="App">
